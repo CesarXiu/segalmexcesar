@@ -10,7 +10,7 @@
 (defn home-page [request]
   (layout/render request "home.html" {:cader (db/get-cader), :municipios (db/get-municipios)}))
 (defn beneficiarios-page [request]
-  (layout/render request "beneficiarios.html" {:cader (db/get-cader), :beneficiarios (db/get-beneficiarios),:municipios (db/get-municipios), :estados (db/get-estados), :localidades (db/get-localidades)}))
+  (layout/render request "beneficiarios.html" {:beneficiarios (db/get-beneficiarios),:municipios (db/get-municipios), :estados (db/get-estados), :localidades (db/get-localidades)}))
 (defn get-beneficiarios-cader [{:keys [params] :as request}]
   (layout/render request "beneficiarios_cader.html" {:cader (db/get-cader-curp params)}))
 (defn localidades-page [request]
@@ -25,7 +25,7 @@
 (defn localidad-page [request]
   (layout/render request "localidad.html" {:localidades (db/get-localidades), :municipios (db/get-municipios)}))
 (defn apoyo-page [request]
-  (layout/render request "apoyo.html" {:localidades (db/get-localidades), :beneficiarios (db/get-beneficiarios), :municipios (db/get-municipios), :estados (db/get-estados)} ))
+  (layout/render request "apoyo.html" {:cader (db/get-cader), :localidades (db/get-localidades), :beneficiarios (db/get-beneficiarios), :municipios (db/get-municipios), :estados (db/get-estados)} ))
 (defn post-estados [{:keys [params]}]
   (db/create-estados! params)
   (response/found "/localidades/estados"))
