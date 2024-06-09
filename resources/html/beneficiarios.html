@@ -86,13 +86,16 @@
 
             <div class="field is-grouped">
                     <div class="control">
-                            <button class="button is-primary" type="submit" onclick="enviar('/beneficiarios/nuevo')">Agregar</button>
+                            <button class="button is-primary" type="submit" id="agregar" onclick="enviar('/beneficiarios/nuevo')">Agregar</button>
                     </div>
                     <div class="control">
-                            <button class="button is-warning" type="button" onclick="enviar('/beneficiarios/actualizar')">Modificar</button>
+                            <button class="button is-warning" type="button" id="actualizar" disabled="true" onclick="enviar('/beneficiarios/actualizar')">Modificar</button>
                     </div>
                     <div class="control">
-                            <button class="button is-danger" type="button" onclick="enviar('/beneficiarios/eliminar')">Eliminar</button>
+                            <button class="button is-danger" type="button" id="eliminar" disabled="true" onclick="enviar('/beneficiarios/eliminar')">Eliminar</button>
+                    </div>
+                    <div class="control">
+                        <button class="button is-success" type="button" id="cedar" disabled="true" onclick="enviar('/beneficiarios/apoyos')">Apoyos Recibidos</button>
                     </div>
             </div>
     </form>
@@ -123,6 +126,14 @@
         });
         });
         document.getElementById('curp_id').addEventListener('change', function() {
+                const cedar = document.getElementById('cedar');
+                cedar.removeAttribute('disabled');
+                const ACT = document.getElementById('actualizar');
+                ACT.removeAttribute('disabled');
+                const ELI = document.getElementById('eliminar');
+                ELI.removeAttribute('disabled');
+                const ADD = document.getElementById('agregar');
+                ADD.setAttribute('disabled', 'true');
                 var select = document.getElementById('curp_id');
                 var input = document.getElementById('curp');
                 const nombres = document.getElementById('nombres');

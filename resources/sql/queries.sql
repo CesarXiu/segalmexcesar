@@ -39,6 +39,32 @@ INNER JOIN
     municipios ON beneficiarios.municipio_id = municipios.municipio_id 
 INNER JOIN 
     localidades ON beneficiarios.localidad_id = localidades.localidad_id;
+-- :name get-cader-curp :? :*
+-- :doc Obtener los cader registrados
+SELECT 
+    cader.cader_id, 
+    cader.fecha, 
+    cader.hora, 
+    cader.curp, 
+    cader.entrego_documentos, 
+    cader.localidad_real, 
+    beneficiarios.nombres, 
+    beneficiarios.primer_apellido, 
+    beneficiarios.segundo_apellido, 
+    estados.nombre AS nombre_estado, 
+    municipios.nombre AS nombre_municipio, 
+    localidades.nombre AS nombre_localidad 
+FROM 
+    cader 
+INNER JOIN 
+    beneficiarios ON cader.curp = beneficiarios.curp 
+INNER JOIN 
+    estados ON beneficiarios.estado_id = estados.estado_id 
+INNER JOIN 
+    municipios ON beneficiarios.municipio_id = municipios.municipio_id 
+INNER JOIN 
+    localidades ON beneficiarios.localidad_id = localidades.localidad_id
+WHERE cader.curp = :curp_id;
 
 -- :name create-estados! :! :n
 -- :Agregar un nuevo estado

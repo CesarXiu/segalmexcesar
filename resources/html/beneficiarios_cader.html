@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="content">
+    <a href="/beneficiarios"><h2>⬅</h2></a>
+    <h1 class="title is-1">APOYOS RECIBIDOS</h1>
+    <table>
+        <thead>
+          <tr>
+            <th>NUM.</th>
+            <th>ESTADO</th>
+            <th>MUNICIPIO</th>
+            <th>LOCALIDAD</th>
+            <th>LOCALIDAD REAL</th>
+            <th>A. PATERNO</th>
+            <th>A. MATERNO</th>
+            <th>NOMBRE (S)</th>
+            <th>CURP</th>
+            <th>FECHA DE ENTREGA</th>
+            <th>HORA DE ENTREGA</th>
+            <th>ENTREGO DOCUMENTOS</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for apoyo in cader%}
+          <tr>
+            <td>{{ apoyo.cader_id }}</td>
+            <td>{{ apoyo.nombre_estado }}</td>
+            <td>{{ apoyo.nombre_municipio }}</td>
+            <td>{{ apoyo.nombre_localidad }}</td>
+            <td>{{ apoyo.localidad_real }}</td>
+            <td>{{ apoyo.primer_apellido }}</td>
+            <td>{{ apoyo.segundo_apellido }}</td>
+            <td>{{ apoyo.nombres }}</td>
+            <td>{{ apoyo.curp }}</td>
+            <td>{{ apoyo.fecha }}</td>
+            <td>{{ apoyo.hora }}</td>
+            <td>
+              {% if apoyo.entrego_documentos %}
+                ✔
+              {% else %}
+                X
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+  <script>
+        /*document.addEventListener("DOMContentLoaded", function() {
+        var select = document.getElementById("curp_id");
+        var input = document.getElementById("input-search");
+
+        var options = Array.from(select.options);
+
+        // Función para normalizar el texto
+        function normalizeText(text) {
+        return text.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        }
+
+        input.addEventListener("input", function() {
+        var filter = normalizeText(input.value);
+
+        options.forEach(function(option) {
+        var optionText = normalizeText(option.text);
+        if (optionText.includes(filter)) {
+                option.style.display = "";
+        } else {
+                option.style.display = "none";
+        }
+        });
+        });
+        });
+        document.getElementById('curp_id').addEventListener('change', function() {
+                const cedar = document.getElementById('cedar');
+                cedar.removeAttribute('disabled');
+                var select = document.getElementById('curp_id');
+                var input = document.getElementById('curp');
+                const nombres = document.getElementById('nombres');
+                const primer_apellido = document.getElementById('primer_apellido');
+                const segundo_apellido = document.getElementById('segundo_apellido');
+                var selectedOption = select.options[select.selectedIndex];
+                input.value = selectedOption.textContent;
+                nombres.value = selectedOption.getAttribute('data-nombre');
+                primer_apellido.value = selectedOption.getAttribute('data-apellido1');
+                segundo_apellido.value = selectedOption.getAttribute('data-apellido2');
+                var estado_id = selectedOption.getAttribute('data-estado');
+                var selectEstado = document.getElementById('estado' + estado_id);
+                selectEstado.selected = true;
+                var municipio_id = selectedOption.getAttribute('data-municipio');
+                var selectMunicipio = document.getElementById('municipio' + municipio_id);
+                selectMunicipio.selected = true;
+                var localidad_id = selectedOption.getAttribute('data-localidad');
+                var selectLocalidad = document.getElementById('localidad' + localidad_id);
+                selectLocalidad.selected = true;
+        });
+        function enviar(url) {
+            var form = document.getElementById('crud-beneficiarios');
+            form.action = url;
+            form.submit();
+        }*/
+    </script>
+{% endblock %}

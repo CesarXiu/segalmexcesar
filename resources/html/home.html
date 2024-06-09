@@ -6,11 +6,12 @@
         <div class="control">
             <div class="select">
                 <select id="municipio" name="municipio">
-                    <option value="municipio">municipio 1</option>
-                    <option value="municipio">municipio 2</option>
-                    <option value="municipio">municipio 3</option>
+                  {% for municipio in municipios %}
+                    <option value="{{ municipio.nombre }}">{{ municipio.nombre }}</option>
+                  {% endfor %}
                 </select>
             </div>
+            <input type="text" class="input" id="search" placeholder="Buscar por CURP">
         </div>
     <table>
       <thead>
@@ -43,12 +44,18 @@
           <td>{{ apoyo.curp }}</td>
           <td>{{ apoyo.fecha }}</td>
           <td>{{ apoyo.hora }}</td>
-          <td>{{ apoyo.entrego_documentos }}</td>
+          <td>
+            {% if apoyo.entrego_documentos %}
+              ✔
+            {% else %}
+              X
+            {% endif %}
+          </td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
-    <a href="/apoyo" class="button is-primary">Agregar Registro</a>
+    <a href="/apoyo" class="button is-primary" id="agregar">Agregar Registro</a>
     <section class="section">
       <div class="container">
           {% block nuevoRegistro %}
@@ -56,4 +63,39 @@
       </div>
   </section>
   </div>
+  <script>
+    function filterByCurp() {
+      var searchValue = document.getElementById("search").value;
+      var rows = document.querySelectorAll("tbody tr");
+
+      for (var i = 0; i < rows.length; i++) {
+        var row = rows[i];
+        var value = row.querySelector("td:nth-child(9)").textContent;
+
+        if (value.includes(searchValue)) {
+          row.style.display = "table-row";
+        } else {
+          row.style.display = "none";
+        }
+      }
+    }
+    document.getElementById("search").addEventListener("input", filterByCurp);
+
+    document.getElementById("municipio").addEventListener("change", function() {
+      var selectedValue = this.value;
+      var rows = document.querySelectorAll("tbody tr");
+
+      for (var i = 0; i < rows.length; i++) {
+        var row = rows[i];
+        var value = row.querySelector("td:nth-child(3)").textContent;
+
+        if (value === selectedValue) {
+          row.style.display = "table-row";
+        } else {
+          row.style.display = "none";
+        }
+      }
+    });
+
+  </script>
 {% endblock %}

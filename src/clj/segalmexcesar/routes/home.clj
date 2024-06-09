@@ -8,9 +8,11 @@
    [ring.util.http-response :as response]))
 
 (defn home-page [request]
-  (layout/render request "home.html" {:cader (db/get-cader)}))
+  (layout/render request "home.html" {:cader (db/get-cader), :municipios (db/get-municipios)}))
 (defn beneficiarios-page [request]
-  (layout/render request "beneficiarios.html" {:beneficiarios (db/get-beneficiarios),:municipios (db/get-municipios), :estados (db/get-estados), :localidades (db/get-localidades)}))
+  (layout/render request "beneficiarios.html" {:cader (db/get-cader), :beneficiarios (db/get-beneficiarios),:municipios (db/get-municipios), :estados (db/get-estados), :localidades (db/get-localidades)}))
+(defn get-beneficiarios-cader [{:keys [params] :as request}]
+  (layout/render request "beneficiarios_cader.html" {:cader (db/get-cader-curp params)}))
 (defn localidades-page [request]
   (layout/render request "localidades.html"))
 ;{:estados (db/get-estados)}
@@ -93,6 +95,7 @@
    ["/beneficiarios/nuevo" {:post post-beneficiarios}]
    ["/beneficiarios/actualizar" {:post put-beneficiarios}]
    ["/beneficiarios/eliminar" {:post delete-beneficiarios}]
+   ["/beneficiarios/apoyos" {:post get-beneficiarios-cader}]
    ["/cader/nuevo" {:post post-cader}]
    ["/cader/actualizar" {:post put-cader}]
    ["/cader/eliminar" {:post delete-cader}]])

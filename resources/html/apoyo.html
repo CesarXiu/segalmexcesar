@@ -90,4 +90,15 @@
     </form>
 </div>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const nuevo = document.getElementById('agregar');
+        const cerrar = document.createElement('a');
+        cerrar.classList.add('button', 'is-danger');
+        cerrar.textContent = 'Cerrar';
+        cerrar.href = '/';
+        nuevo.insertAdjacentElement('afterend', cerrar);
+
+    });
+</script>
 {% endblock %}
