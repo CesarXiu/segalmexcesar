@@ -25,7 +25,7 @@
 (defn localidad-page [request]
   (layout/render request "localidad.html" {:localidades (db/get-localidades), :municipios (db/get-municipios)}))
 (defn apoyo-page [request]
-  (layout/render request "apoyo.html" {:localidades (db/get-localidades), :beneficiarios (db/get-beneficiarios)} ))
+  (layout/render request "apoyo.html" {:localidades (db/get-localidades), :beneficiarios (db/get-beneficiarios), :municipios (db/get-municipios), :estados (db/get-estados)} ))
 (defn post-estados [{:keys [params]}]
   (db/create-estados! params)
   (response/found "/localidades/estados"))
