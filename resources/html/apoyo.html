@@ -1,0 +1,93 @@
+{% extends "home.html" %}
+{% block nuevoRegistro %}
+<div class="content">
+    <form action="/cader/nuevo" method="POST">
+        {% csrf-field %}
+        <div class="field">
+            <label class="label" for="curp">CURP:</label>
+            <div class="control">
+                <select class="select" id="curp" name="curp" required>
+                    <option value="" disabled selected hidden>Curp..</option>
+                        {% for beneficiario in beneficiarios %}
+                        <option value="{{beneficiario.curp}}">
+                            {{ beneficiario.curp }}
+                        </option>
+                        {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label" for="estado">Estado:</label>
+            <div class="control">
+                <div class="select">
+                    <select id="estado" name="estado">
+                        <option value="">Selecciona un estado</option>
+                        <!-- Add options for states here -->
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label" for="municipio">Municipio:</label>
+            <div class="control">
+                <div class="select">
+                    <select id="municipio" name="municipio">
+                        <option value="">Selecciona un municipio</option>
+                        <!-- Add options for municipalities based on selected state here -->
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label" for="localidad1">Localidad 1:</label>
+            <div class="control">
+                <div class="select">
+                    <select id="localidad1" name="localidad1">
+                        <option value="">Selecciona una localidad</option>
+                        <!-- Add options for localities based on selected municipality here -->
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label" for="localidad_real">Localidad 2:</label>
+            <div class="control">
+                <div class="select">
+                    <select id="localidad_real" name="localidad_real" required>
+                        <option value="" disabled selected hidden>Localidad donde se entregó..</option>
+                        {% for localidad in localidades %}
+                        <option value="{{ localidad.nombre }}">{{ localidad.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label" for="fecha">Fecha de entrega:</label>
+            <div class="control">
+                <input class="input" type="date" id="fecha" name="fecha" required>
+            </div>
+        </div>
+        <div class="field">
+            <label class="label" for="hora">Hora de entrega:</label>
+            <div class="control">
+                <input class="input" type="time" id="hora" name="hora" required>
+            </div>
+        </div>
+        <div class="field">
+            <div class="control">
+                <label class="checkbox">
+                    <input type="checkbox" required name="entrego_documentos" value="true">
+                    Entregó documentos
+                </label>
+            </div>
+        </div>
+        <div class="field">
+            <div class="control">
+                <button class="button is-primary" type="submit">Enviar</button>
+            </div>
+        </div>
+    </form>
+</div>
+</div>
+{% endblock %}

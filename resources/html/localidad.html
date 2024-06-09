@@ -1,0 +1,123 @@
+{% extends "localidades.html" %}
+{% block localidades %}
+  <div class="content">
+    <h3>Localidad</h3>
+    <hr>
+    <table class="table is-bordered is-striped is-narrow is-hoverable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Localidad</th>
+                <th>Municipio</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for localidad in localidades %}
+            <tr>
+                <td>{{ localidad.localidad_id }}</td>
+                <td>{{ localidad.nombre }}</td>
+                <td>{{ localidad.nombre_municipio }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="options">
+        <h2 class="title is-2">Agregar nueva localidad</h2>
+        <form action="/localidades/localidad/nuevo" method="POST">
+        <fieldset>
+            {% csrf-field %}
+            <div class="field">
+                <label class="label" for="localidad">Nombre de la localidad:</label>
+                <div class="control">
+                    <input class="input" type="text" id="localidad" name="nombre">
+                </div>
+            </div>
+            <div class="field">
+                <label class="label" for="municipio">Municipio:</label>
+                <div class="control">
+                    <div class="select">
+                        <select id="municipio" name="municipio_id">
+                            {% for municipio in municipios %}
+                                <option value="{{ municipio.municipio_id }}">{{ municipio.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="control">
+                <button class="button is-success" type="submit">Agregar</button>
+            </div>
+        </fieldset>
+        </form>
+    </div>
+    <br> <hr>
+    <div class="options">
+        <h2 class="title is-2">Actualizar Localidad</h2>
+        <form action="" method="POST" id="localidad-actualizar">
+            {% csrf-field %}
+            <fieldset>
+            <div class="field">
+                <label class="label" for="localidad">Localidad:</label>
+                <div class="control">
+                    <div class="select">
+                        <select id="select_localidad" name="localidad_id">
+                            {% for localidad in localidades %}
+                                <option value="{{ localidad.localidad_id }}" id="id{{ localidad.localidad_id }}localidad" data-localidad-id="{{ localidad.municipio_id }}">{{ localidad.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label" for="nuevo_nombre">Nuevo nombre:</label>
+                <div class="control">
+                    <input class="input" type="text" id="nuevo_nombre" name="nuevo_nombre">
+                </div>
+            </div>
+            <div class="field">
+                <label class="label" for="municipio">Municipio:</label>
+                <div class="control">
+                    <div class="select">
+                        <select id="nuevo_municipio_id" name="nuevo_municipio_id">
+                            {% for municipio in municipios %}
+                                <option id="id{{municipio.municipio_id}}municipio" value="{{ municipio.municipio_id }}">{{ municipio.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="control">
+                <button class="button is-primary" type="submit" onclick="enviar('/localidades/localidad/actualizar')">Actualizar</button>
+                <button class="button is-danger" type="submit" onclick="enviar('/localidades/localidad/actualizar')">Eliminar</button>
+            </div>
+        </fieldset>
+        </form>
+    </div>
+    <br> <hr>
+  </div>
+  <script>
+    document.getElementById('select_localidad').addEventListener('change', function() {
+        var select = document.getElementById('select_localidad');
+        var input = document.getElementById('nuevo_nombre');
+        var selectedOption = select.options[select.selectedIndex];
+        input.value = selectedOption.textContent;
+        var estado_id = document.getElementById('id' + selectedOption.value + 'localidad').getAttribute('data-localidad-id');
+        var selectEstado = document.getElementById('id' + estado_id + 'municipio');
+        selectEstado.selected = true;
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        var select = document.getElementById('select_localidad');
+        var input = document.getElementById('nuevo_nombre');
+        var selectedOption = select.options[select.selectedIndex];
+        input.value = selectedOption.textContent;
+        var municipio_id = document.getElementById('id' + selectedOption.value + 'localidad').getAttribute('data-localidad-id');
+        var selectMunicipio = document.getElementById('id' + municipio_id + 'municipio');
+        selectMunicipio.selected = true;
+    });
+    function enviar(url) {
+        var form = document.getElementById('localidad-actualizar');
+        form.action = url;
+        form.submit();
+    }
+</script>
+{% endblock %}

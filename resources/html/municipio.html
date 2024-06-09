@@ -1,0 +1,121 @@
+{% extends "localidades.html" %}
+{% block localidades %}
+  <div class="content">
+    <h3>Muncipio</h3>
+    <hr>
+    <table class="table is-bordered is-striped is-narrow is-hoverable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Municipio</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for municipio in municipios %}
+            <tr>
+                <td>{{ municipio.municipio_id }}</td>
+                <td>{{ municipio.nombre }}</td>
+                <td>{{ municipio.nombre_estado }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br> <hr>
+    <div class="options">
+        <h2 class="title is-2">Agregar nuevo municipio</h2>
+        <form action="/localidades/municipios/nuevo" method="POST">
+            {% csrf-field %}
+            <div class="field">
+                <label class="label" for="nombre">Nombre del municipio:</label>
+                <div class="control">
+                    <input class="input" type="text" id="municipio" name="nombre">
+                </div>
+            </div>
+            <div class="field">
+                <label class="label" for="estado_id">Estado:</label>
+                <div class="control">
+                    <div class="select">
+                        <select id="estado" name="estado_id">
+                            {% for estado in estados %}
+                                <option value="{{ estado.estado_id }}">{{ estado.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="control">
+                <button class="button is-success" type="submit">Agregar</button>
+            </div>
+        </form>
+    </div>
+    <br> <hr>
+    <div class="options">
+        <h2 class="title is-2">Actualizar Municipio</h2>
+        <form action="" method="POST" id="municipio-actualizar">
+            {% csrf-field %}
+            <div class="field">
+                <label class="label" for="municipio_id">Municipio:</label>
+                <div class="control">
+                    <div class="select">
+                        <select id="municipio_id" name="municipio_id">
+                            {% for municipio in municipios %}
+                            <option value="{{ municipio.municipio_id }}" id="id{{ municipio.municipio_id }}municipio" data-estado-id="{{ municipio.estado_id }}">{{ municipio.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label class="label" for="nuevo-nombre-municipio">Nombre:</label>
+                <div class="control">
+                    <input class="input" type="text" id="nuevo-nombre-municipio" name="nuevo_nombre">
+                </div>
+            </div>
+            <div class="field">
+                <label class="label" for="nuevo_estado_id">Nuevo estado:</label>
+                <div class="control">
+                    <div class="select">
+                        <select id="estado" name="nuevo_estado_id">
+                            {% for estado in estados %}
+                                <option id="id{{estado.estado_id}}estado" value="{{ estado.estado_id }}">{{ estado.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="control">
+                <button class="button is-primary" type="submit" onclick="enviar('/localidades/municipios/actualizar')">Actualizar</button>
+                <button class="button is-danger" type="submit" onclick="enviar('/localidades/municipios/eliminar')">Eliminar</button>
+            </div>
+        </form>
+    </div>
+    <br> <hr>
+  </div>
+  <script>
+    document.getElementById('municipio_id').addEventListener('change', function() {
+        var select = document.getElementById('municipio_id');
+        var input = document.getElementById('nuevo-nombre-municipio');
+        var selectedOption = select.options[select.selectedIndex];
+        input.value = selectedOption.textContent;
+        var estado_id = document.getElementById('id' + selectedOption.value + 'municipio').getAttribute('data-estado-id');
+        var selectEstado = document.getElementById('id' + estado_id + 'estado');
+        selectEstado.selected = true;
+        console.log(input.value);
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        var select = document.getElementById('municipio_id');
+        var input = document.getElementById('nuevo-nombre-municipio');
+        var selectedOption = select.options[select.selectedIndex];
+        input.value = selectedOption.textContent;
+        var estado_id = document.getElementById('id' + selectedOption.value + 'municipio').getAttribute('data-estado-id');
+        var selectEstado = document.getElementById('id' + estado_id + 'estado');
+        selectEstado.selected = true;
+    });
+    function enviar(url) {
+        var form = document.getElementById('municipio-actualizar');
+        form.action = url;
+        form.submit();
+    }
+</script>
+{% endblock %}

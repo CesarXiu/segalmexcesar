@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="content">
+    <h1 class="title is-1">BENEFICIARIOS</h1>
+    <form action="" method="POST" id="crud-beneficiarios">
+        {% csrf-field %}
+        <label class="label" for="curp">CURP:</label>
+        <div class="control">
+        <input class="input" type="text" id="input-search" placeholder="Buscar...">
+            <div class="select">
+                <select id="curp_id" name="curp_id">
+                        <option value="" disabled selected hidden>Beneficiarios..</option>
+                        {% for beneficiario in beneficiarios %}
+                        <option value="{{beneficiario.curp}}" 
+                        data-nombre="{{beneficiario.nombres}}"
+                        data-apellido1="{{beneficiario.primer_apellido}}" 
+                        data-apellido2="{{beneficiario.segundo_apellido}}"
+                        data-estado="{{beneficiario.estado_id}}" 
+                        data-municipio="{{beneficiario.municipio_id}}"
+                        data-localidad="{{beneficiario.localidad_id}}" 
+                        >{{ beneficiario.curp }}</option>
+                        {% endfor %}
+                </select>
+            </div>
+        </div>
+            <div class="field">
+                    <label class="label" for="primer_apellido">Apellido Paterno:</label>
+                    <div class="control">
+                            <input class="input" type="text" id="primer_apellido" name="primer_apellido" required>
+                    </div>
+            </div>
+
+            <div class="field">
+                    <label class="label" for="segundo_apellido">Apellido Materno:</label>
+                    <div class="control">
+                            <input class="input" type="text" id="segundo_apellido" name="segundo_apellido" required>
+                    </div>
+            </div>
+
+            <div class="field">
+                    <label class="label" for="nombres">Nombres:</label>
+                    <div class="control">
+                            <input class="input" type="text" id="nombres" name="nombres" required>
+                    </div>
+            </div>
+
+            <div class="field">
+                    <label class="label" for="curp">CURP:</label>
+                    <div class="control">
+                            <input class="input" type="text" id="curp" name="curp" required>
+                    </div>
+            </div>
+            <div class="field">
+                <label class="label" for="curp">Estado:</label>
+                <div class="control select">
+                        <select id="estado_id" name="estado_id">
+                                <option value="" disabled selected hidden>Estado..</option>
+                                {% for estado in estados %}
+                                <option id="estado{{estado.estado_id}}" value="{{estado.estado_id}}">{{ estado.nombre }}</option>
+                                {% endfor %}
+                        </select>
+                </div>
+        </div>
+        <div class="field">
+                <label class="label" for="curp">Municipio:</label>
+                <div class="control select">
+                        <select id="municipio_id" name="municipio_id">
+                                <option value="" disabled selected hidden>Municipio..</option>
+                                {% for municipio in municipios %}
+                                <option id="municipio{{municipio.municipio_id}}" value="{{ municipio.municipio_id }}" id="id{{ municipio.municipio_id }}municipio" data-estado-id="{{ municipio.estado_id }}">{{ municipio.nombre }}</option>
+                                {% endfor %}
+                        </select>
+                </div>
+        </div>
+        <div class="field">
+                <label class="label" for="curp">Localidad:</label>
+                <div class="control select">
+                        <select id="select_localidad" name="localidad_id">
+                                <option value="" disabled selected hidden>Localidad..</option>
+                                {% for localidad in localidades %}
+                                    <option id="localidad{{localidad.localidad_id}}" value="{{ localidad.localidad_id }}" id="id{{ localidad.localidad_id }}localidad" data-localidad-id="{{ localidad.municipio_id }}">{{ localidad.nombre }}</option>
+                                {% endfor %}
+                        </select>
+                </div>
+        </div>
+
+            <div class="field is-grouped">
+                    <div class="control">
+                            <button class="button is-primary" type="submit" onclick="enviar('/beneficiarios/nuevo')">Agregar</button>
+                    </div>
+                    <div class="control">
+                            <button class="button is-warning" type="button" onclick="enviar('/beneficiarios/actualizar')">Modificar</button>
+                    </div>
+                    <div class="control">
+                            <button class="button is-danger" type="button" onclick="enviar('/beneficiarios/eliminar')">Eliminar</button>
+                    </div>
+            </div>
+    </form>
+  </div>
+  <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        var select = document.getElementById("curp_id");
+        var input = document.getElementById("input-search");
+
+        var options = Array.from(select.options);
+
+        // Función para normalizar el texto
+        function normalizeText(text) {
+        return text.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        }
+
+        input.addEventListener("input", function() {
+        var filter = normalizeText(input.value);
+
+        options.forEach(function(option) {
+        var optionText = normalizeText(option.text);
+        if (optionText.includes(filter)) {
+                option.style.display = "";
+        } else {
+                option.style.display = "none";
+        }
+        });
+        });
+        });
+        document.getElementById('curp_id').addEventListener('change', function() {
+                var select = document.getElementById('curp_id');
+                var input = document.getElementById('curp');
+                const nombres = document.getElementById('nombres');
+                const primer_apellido = document.getElementById('primer_apellido');
+                const segundo_apellido = document.getElementById('segundo_apellido');
+                var selectedOption = select.options[select.selectedIndex];
+                input.value = selectedOption.textContent;
+                nombres.value = selectedOption.getAttribute('data-nombre');
+                primer_apellido.value = selectedOption.getAttribute('data-apellido1');
+                segundo_apellido.value = selectedOption.getAttribute('data-apellido2');
+                var estado_id = selectedOption.getAttribute('data-estado');
+                var selectEstado = document.getElementById('estado' + estado_id);
+                selectEstado.selected = true;
+                var municipio_id = selectedOption.getAttribute('data-municipio');
+                var selectMunicipio = document.getElementById('municipio' + municipio_id);
+                selectMunicipio.selected = true;
+                var localidad_id = selectedOption.getAttribute('data-localidad');
+                var selectLocalidad = document.getElementById('localidad' + localidad_id);
+                selectLocalidad.selected = true;
+        });
+        function enviar(url) {
+            var form = document.getElementById('crud-beneficiarios');
+            form.action = url;
+            form.submit();
+        }
+    </script>
+{% endblock %}

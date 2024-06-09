@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="content"></div>
+<h1 class="title is-1">LOCALIDADES</h1>
+<nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      </a>
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    <div id="navbarBasicExample" class="navbar-menu">
+      <div class="navbar-start">
+        <a href="/localidades/estados" class="navbar-item{% ifequal page "estado.html" %} is-active{%endifequal%}">
+          Estado
+        </a>
+        <a href="/localidades/municipios" class="navbar-item{% ifequal page "municipio.html" %} is-active{%endifequal%}">
+          Municipio
+        </a>
+        <a href="/localidades/localidad" class="navbar-item{% ifequal page "localidad.html" %} is-active{%endifequal%}">
+          Localidad
+        </a>
+       </div>
+      </div>
+    </div>
+</nav>
+<section class="section">
+    <div class="container">
+        {% block localidades %}
+        {% endblock %}
+    </div>
+</section>
+</div>
+  </div>
+  <script type="text/javascript">
+    (function() {
+      var burger = document.querySelector('.burger');
+      var nav = document.querySelector('#'+burger.dataset.target);
+      burger.addEventListener('click', function(){
+        burger.classList.toggle('is-active');
+        nav.classList.toggle('is-active');
+      });
+    })();
+  </script>
+{% endblock %}

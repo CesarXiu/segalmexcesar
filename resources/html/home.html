@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="content">
+    <h1>CADER QUINTANA ROO</h1>
+        <label class="label" for="municipio">Municipio:</label>
+        <div class="control">
+            <div class="select">
+                <select id="municipio" name="municipio">
+                    <option value="municipio">municipio 1</option>
+                    <option value="municipio">municipio 2</option>
+                    <option value="municipio">municipio 3</option>
+                </select>
+            </div>
+        </div>
+    <table>
+      <thead>
+        <tr>
+          <th>NUM.</th>
+          <th>ESTADO</th>
+          <th>MUNICIPIO</th>
+          <th>LOCALIDAD</th>
+          <th>LOCALIDAD REAL</th>
+          <th>A. PATERNO</th>
+          <th>A. MATERNO</th>
+          <th>NOMBRE (S)</th>
+          <th>CURP</th>
+          <th>FECHA DE ENTREGA</th>
+          <th>HORA DE ENTREGA</th>
+          <th>ENTREGO DOCUMENTOS</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for apoyo in cader%}
+        <tr>
+          <td>{{ apoyo.cader_id }}</td>
+          <td>{{ apoyo.nombre_estado }}</td>
+          <td>{{ apoyo.nombre_municipio }}</td>
+          <td>{{ apoyo.nombre_localidad }}</td>
+          <td>{{ apoyo.localidad_real }}</td>
+          <td>{{ apoyo.primer_apellido }}</td>
+          <td>{{ apoyo.segundo_apellido }}</td>
+          <td>{{ apoyo.nombres }}</td>
+          <td>{{ apoyo.curp }}</td>
+          <td>{{ apoyo.fecha }}</td>
+          <td>{{ apoyo.hora }}</td>
+          <td>{{ apoyo.entrego_documentos }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <a href="/apoyo" class="button is-primary">Agregar Registro</a>
+    <section class="section">
+      <div class="container">
+          {% block nuevoRegistro %}
+          {% endblock %}
+      </div>
+  </section>
+  </div>
+{% endblock %}

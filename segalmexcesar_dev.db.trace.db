@@ -1,0 +1,8 @@
+2024-06-09 13:58:11 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "SCHEMA_MIGRATIONS" not found; SQL statement:
+SELECT 1 FROM schema_migrations [42102-200]
+2024-06-09 14:17:32 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLDataException: Data conversion error converting "'on' (CADER: ""ENTREGO_DOCUMENTOS"" BOOLEAN)"; SQL statement:
+INSERT INTO cader
+(fecha, hora, curp, entrego_documentos, localidad_real)
+VALUES (?, ?, ?, ?, ?) [22018-200]
