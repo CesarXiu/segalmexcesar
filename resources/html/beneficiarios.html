@@ -78,7 +78,7 @@
                         <select id="select_localidad" name="localidad_id">
                                 <option value="" disabled selected hidden>Localidad..</option>
                                 {% for localidad in localidades %}
-                                    <option id="localidad{{localidad.localidad_id}}" value="{{ localidad.localidad_id }}" id="id{{ localidad.localidad_id }}localidad" data-localidad-id="{{ localidad.municipio_id }}">{{ localidad.nombre }}</option>
+                                    <option id="localidad{{localidad.localidad_id}}" value="{{ localidad.localidad_id }}" id="id{{ localidad.localidad_id }}localidad" data-municipio-id="{{ localidad.municipio_id }}">{{ localidad.nombre }}</option>
                                 {% endfor %}
                         </select>
                 </div>
@@ -159,5 +159,37 @@
             form.action = url;
             form.submit();
         }
-    </script>
+                function filtrarMunicipios() {
+                        var estadoId = document.getElementById('estado_id').value;
+                        var municipios = document.querySelectorAll('#municipio_id option');
+                        municipios.forEach(function(municipio) {
+                                if (municipio.getAttribute('data-estado-id') === estadoId || municipio.getAttribute('data-estado-id') === '') {
+                                        municipio.style.display = '';
+                                } else {
+                                        municipio.style.display = 'none';
+                                }
+                        });
+                        // Reset selected municipio
+                        document.getElementById('municipio_id').selectedIndex = 0;
+                        // Reset selected localidad
+                        document.getElementById('select_localidad').selectedIndex = 0;
+                }
+
+                function filtrarLocalidades() {
+                        var municipioId = document.getElementById('municipio_id').value;
+                        var localidades = document.querySelectorAll('#select_localidad option');
+                        localidades.forEach(function(localidad) {
+                                if (localidad.getAttribute('data-municipio-id') === municipioId || localidad.getAttribute('data-municipio-id') === '') {
+                                        localidad.style.display = '';
+                                } else {
+                                        localidad.style.display = 'none';
+                                }
+                        });
+                        // Reset selected localidad
+                        document.getElementById('select_localidad').selectedIndex = 0;
+                }
+
+                document.getElementById('estado_id').addEventListener('change', filtrarMunicipios);
+                document.getElementById('municipio_id').addEventListener('change', filtrarLocalidades);
+        </script>
 {% endblock %}
